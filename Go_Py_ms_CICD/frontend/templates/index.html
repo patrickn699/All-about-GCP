@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<title>Home
+   
+</title>
+
+<head> <link rel="stylesheet" href="{{ url_for('static', filename='static/style.css') }}"></head>
+
+
+<form class="fileUpload" action="{{url_for('fil')}}", method="post" name="file" enctype="multipart/form-data" >
+    <input type="file" class="fileElem" multiple name="file" accept="image/png, image/jpeg">
+    <label class="fileSelect">Upload File</label>
+    <input required type="text" name="height" placeholder="height of the image">
+    <input required type="text" name="width" placeholder="width of the image">
+    <input required type="text" name="percent" placeholder="x1 value">
+    <input required type="text" name="watermark" placeholder="y1 value">
+    <input type="submit" value="Upload">
+    <!--<h4>Usage</h4>
+    <progress value="40" max="100"></progress>
+    <p>4.00 GB out of 10 GB (40%) (<a href="#" class="upgrade">Upgrade</a>)</p> -->
+  </form>
+
+
+</html>

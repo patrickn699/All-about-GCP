@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myingress
+  annotations: 
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels:
+    name: myingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: goingress.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: goingress-service
+            port: 
+              number: 80
+        
+      - pathType: Prefix
+        path: "/about"
+        backend:
+          service:
+            name: goingress-service
+            port: 
+              number: 80

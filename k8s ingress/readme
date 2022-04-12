@@ -1,0 +1,5 @@
+before running you need to modify the hosts file in system32
+and change the localhost ip to the given domain name.
+-- execute kubectl apply -f ./
+-- execute kubectl get ing
+for ex: 127.0.0.1 goingress.com

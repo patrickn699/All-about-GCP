@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="sy.css">
+        <script src="ani.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='static/sy.css') }}">
+    </head>
+    <div class="user">
+        <header class="user__header">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3219/logo.svg" alt="" />
+            <h1 class="user__title">A lightweight and simple sign-up form</h1>
+        </header>
+        
+        <form class="form"  method="post" name="file" enctype="multipart/form-data" action="{{url_for('fil')}}">
+            <div class="form__group">
+                <input type="text" placeholder="Enter height" class="form__input" name="height" />
+            </div>
+            
+            <div class="form__group">
+                <input type="text" placeholder="Enter width" class="form__input" name="width" />
+            </div>
+            
+            <div class="form__group">
+                <input type="text" placeholder="Enter x1" class="form__input" name="percent" />
+            </div>
+
+            <div class="form__group">
+                <input type="text" placeholder="Enter x2" class="form__input" name="watermark" />
+            </div>
+
+
+            <div class="form__group">
+                <input type="file" class="btn" multiple name="file" accept="image/png, image/jpeg">
+               <!-- <label class="fileSelect">Upload File</label>-->
+            </div>
+
+
+            
+            <button class="btn" type="submit" >Register</button>
+        </form>
+    </div>
+</html>

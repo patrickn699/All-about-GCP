@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <title>Cropping image</title>
+    <head>
+     <!--   <link rel="stylesheet" href="sy.css"> -->
+        <script src="ani.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/sy.css') }}">
+        <link rel="icon" href="static/logos/icng.gif">
+    </head>
+    <div class="user">
+        <header class="user__header">
+            <!--<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3219/logo.svg" alt="" /> -->
+
+            <img src="static/logos/icn.png" alt="" />
+
+            <h1 class="user__title">A simple and lightweight image cropper</h1>
+        </header>
+        
+        <form class="form"  method="post" name="file" enctype="multipart/form-data" action="{{url_for('fil')}}">
+            <div class="form__group">
+                <input required type="text" placeholder="Enter height" class="form__input" name="height" />
+            </div>
+            
+            <div class="form__group">
+                <input required type="text" placeholder="Enter width" class="form__input" name="width" />
+            </div>
+            
+            <div class="form__group">
+                <input required type="text" placeholder="Enter x1" class="form__input" name="percent" />
+            </div>
+
+            <div class="form__group">
+                <input required type="text" placeholder="Enter x2" class="form__input" name="watermark" />
+            </div>
+
+
+            <div class="form__group">
+                <input required  type="file" class="btn" multiple name="file" accept="image/png, image/jpeg">
+               <!-- <label class="fileSelect">Upload File</label>-->
+            </div>
+
+
+            
+            <button class="btn" type="submit" >Crop</button>
+        </form>
+    </div>
+</html>

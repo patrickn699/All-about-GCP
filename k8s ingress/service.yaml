@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: goingress-service
+spec:
+  selector:
+    app: goingress
+  ports:
+  - port: 80
+    targetPort: 8005
+    protocol: TCP
+---
+# YAML data
+# Path: deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goingress-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goingress
+  template:
+    metadata:
+      labels:
+        app: goingress
+    spec:
+      containers:
+      - name: goingress
+        image: goingress:0.0.1
+        ports:
+        - containerPort: 8005
+          protocol: TCP

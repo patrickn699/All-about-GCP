@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+       <!-- <link rel="stylesheet" href="sy.css"> -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/sy.css') }}">
+    </head>
+    
+    <form class="form" >
+
+    <div class="form__group">
+      <!--  <input type="text" placeholder="Enter width" class="form__input" name="width" /> -->
+        <h1 class="form__input">Downloads Page</h1>
+        <h2 class="form__input" centre >Click the button to download your file</h2>
+    
+        <a href="{{ url_for('geti',filename='output.png') }}">click</a>
+
+        
+
+        <h3>{{ .error }} </h3>
+    </div>
+    
+</form>
+
+<style>
+    h1 {text-align: center; font-family: 'Lucida Sans'}
+    h2 {text-align: center;}
+    div {text-align: center;}
+    h3 {font-size: 20px;}
+    a {font-size: 25px; text-align: center;}
+    </style>
+   
+   
+</html>

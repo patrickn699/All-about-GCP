@@ -24,6 +24,6 @@ spec:
         path: "/about"
         backend:
           service:
-            name: goingress-service
+            name: pyingress-service
             port: 
               number: 80

@@ -32,3 +32,38 @@ spec:
         ports:
         - containerPort: 8005
           protocol: TCP
+---
+# YAML data
+apiVersion: v1
+kind: Service
+metadata:
+  name: pyingress-service
+spec:
+  selector:
+    app: pyingress
+  ports:
+  - port: 80
+    targetPort: 8800
+    protocol: TCP
+---
+# YAML data
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pyingress-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pyingress
+  template:
+    metadata:
+      labels:
+        app: pyingress
+    spec:
+      containers:
+      - name: pyingress
+        image: pyingress:0.0.1
+        ports:
+        - containerPort: 8800
+          protocol: TCP

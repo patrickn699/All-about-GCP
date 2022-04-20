@@ -1,0 +1,11 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/qwiklabs-gcp-04-c23dcfc9e2fc/filec:1.0.4', '.']
+  #images: ['gcr.io/qwiklabs-gcp-00-856e53d43212/filec:1.0.4']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/qwiklabs-gcp-04-c23dcfc9e2fc/filec:1.0.4']
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'filec', '--image', 'gcr.io/qwiklabs-gcp-04-c23dcfc9e2fc/filec:1.0.4', '--port', '8051', '--allow-unauthenticated', '--region', 'us-central1']
+images:
+- gcr.io/qwiklabs-gcp-04-c23dcfc9e2fc/filec:1.0.4

@@ -2,10 +2,10 @@ from google.cloud import storage
 import pandas as pd
 
 
-source_bucket_name = 'bucket_name'
-source_blob_name = 'data.xlsx'
-destination_bucket_name = 'bucket_name'
-destination_blob_name = 'data.csv'
+source_bucket_name = 'qwiklabs-gcp-01-1bfd3dd7c03a-xlsx-excel'
+source_blob_name = 'bankc.xlsx'
+destination_bucket_name = 'qwiklabs-gcp-01-1bfd3dd7c03a-csv-cssv'
+destination_blob_name = 'bankc.csv'
 
 
 

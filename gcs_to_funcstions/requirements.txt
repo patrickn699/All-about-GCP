@@ -1,3 +1,5 @@
+google-cloud-storage
 pandas
 xlrd
 xlwt
+openpyxl

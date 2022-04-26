@@ -3,3 +3,5 @@ pandas
 xlrd
 xlwt
 openpyxl
+fsspec
+gcsfs

@@ -1,0 +1,44 @@
+# openapi2-functions.yaml
+swagger: '2.0'
+info:
+  title: api-gateway optional-string
+  description: Sample API on API Gateway with a Google Cloud Functions backend
+  version: 1.0.0
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /HelloPy:
+    get:
+      summary: Greet a user in python
+      operationId: hello
+      x-google-backend:
+        address: https://us-central1-qwiklabs-gcp-03-715d2c4108a5.cloudfunctions.net/hello_get
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+  /HelloGo:
+    get:
+      summary: Greet a user in Go
+      operationId: hello
+      x-google-backend:
+        address: https://us-central1-qwiklabs-gcp-03-715d2c4108a5.cloudfunctions.net/hello_get
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+  /HelloNod:
+    get:
+      summary: Greet a user in Node
+      operationId: hello
+      x-google-backend:
+        address: https://us-central1-qwiklabs-gcp-03-715d2c4108a5.cloudfunctions.net/hello_get
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string

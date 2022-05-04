@@ -11,7 +11,7 @@
    */
 const functions = require('@google-cloud/functions-framework');
 
-functions.http('helloGET', (req, res) => {
+functions.http('hello_nod', (req, res) => {
   res.send('Hello World!, from Node JS');
 });
   

@@ -1,0 +1,168 @@
+git clone https://github.com/patrickn699/All-about-GCP.git
+cd All-about-GCP
+cd gcp_api_gateway
+
+gcloud functions deploy hello_py \
+--runtime python39 --trigger-http --allow-unauthenticated
+
+gcloud functions deploy Hello_go \
+--runtime go116 --trigger-http --allow-unauthenticated
+
+gcloud functions deploy hello_nod \
+--runtime nodejs16 --trigger-http --allow-unauthenticated
+
+
+gcloud functions describe hello_py
+gcloud functions describe Hello_go
+gcloud functions describe hello_nod
+
+
+gcloud api-gateway apis create my-api --project="your project id"
+gcloud api-gateway apis describe my-api --project="your project id"
+
+
+# openapi2-functions.yaml
+swagger: '2.0'
+info:
+  title: api-gateway
+  description: Sample API on API Gateway with a Google Cloud Functions as backend
+  version: 1.0.0
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /HelloPy:
+    get:
+      summary: Hello world in python
+      operationId: hello_py
+      x-google-backend:
+        address: "replace this by the url of the python fucntion"
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+  /HelloGo:
+    get:
+      summary: Hello world in Go
+      operationId: hello_go
+      x-google-backend:
+        address: "replace this by the url of the go fucntion"
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+  /HelloNod:
+    get:
+      summary: Hello world in Node
+      operationId: hello_node
+      x-google-backend:
+        address: "replace this by the url of the node js fucntion"
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+
+
+gcloud api-gateway api-configs create gateway-config \
+  --api=my-api --openapi-spec=openapi2.yaml \
+  --project="your project id" --backend-auth-service-account="your service account email"
+  
+gcloud api-gateway api-configs describe gateway-config \
+  --api=my-api --project="your project id"
+
+
+gcloud api-gateway gateways create my-gateway \
+  --api=my-api --api-config=gateway-config \
+  --location=us-central1 --project="your project id"
+  
+gcloud api-gateway gateways describe my-gateway \
+  --location=us-central1 --project="your project id"
+
+
+curl https://your_gateway_url/HelloPy
+curl https://your_gateway_url/HelloGo
+curl https://your_gateway_url/HelloNod
+
+
+gcloud api-gateway apis describe my-api --project=my-project
+gcloud services enable MANAGED_SERVICE_NAME.apigateway.qwiklabs-gcp-01-2731abedff78.cloud.goog
+example:- gcloud services enable my-api-2d43960eax13u.apigateway.qwiklabs-gcp-01-2731abedff78.cloud.goog
+
+
+# openapi2-functions.yaml
+swagger: '2.0'
+info:
+  title: api-gateway optional-string
+  description: Sample API on API Gateway with a Google Cloud Functions backend
+  version: 1.0.0
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /HelloPy:
+    get:
+      summary: Greet a user in python
+      operationId: hello_py
+      x-google-backend:
+        address: "replace this by the url of the python fucntion"
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+  /HelloGo:
+    get:
+      summary: Greet a user in Go
+      operationId: hello_go
+      x-google-backend:
+        address:  "replace this by the url of the go fucntion"
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+  /HelloNod:
+    get:
+      summary: Greet a user in Node
+      operationId: hello_nod
+      x-google-backend:
+        address:  "replace this by the url of the node js fucntion"
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+
+securityDefinitions:
+    # This section configures basic authentication with an API key.
+    api_key:
+      type: "apiKey"
+      name: "key"
+      in: "query"
+
+
+gcloud api-gateway api-configs create secure-config \
+--api=my-api --openapi-spec=secure-api.yaml \
+--project=qwiklabs-gcp-01-2731abedff78 --backend-auth-service-account="your service account"
+
+
+gcloud api-gateway gateways update my-gateway \
+  --api=my-api --api-config=secure-config \
+  --location=us-central1 --project="your project id"
+
+
+curl https://your_gateway_url/HelloPy
+curl https://your_gateway_url/HelloPy?key="your api key"
+
+

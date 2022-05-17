@@ -1,0 +1,57 @@
+# openapi2-functions.yaml
+swagger: '2.0'
+info:
+  title: api-gateway optional-string
+  description: Sample API on API Gateway with a Google Cloud Functions backend
+  version: 1.0.0
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /HelloPy:
+    get:
+      summary: Greet a user in python
+      operationId: hello_py
+      x-google-backend:
+        address: https://us-central1-qwiklabs-gcp-01-2731abedff78.cloudfunctions.net/hello_py
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+  /HelloGo:
+    get:
+      summary: Greet a user in Go
+      operationId: hello_go
+      x-google-backend:
+        address:  https://us-central1-qwiklabs-gcp-01-2731abedff78.cloudfunctions.net/Hello_go
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+  /HelloNod:
+    get:
+      summary: Greet a user in Node
+      operationId: hello_nod
+      x-google-backend:
+        address:  https://us-central1-qwiklabs-gcp-01-2731abedff78.cloudfunctions.net/hello_nod
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+
+securityDefinitions:
+    # This section configures basic authentication with an API key.
+    api_key:
+      type: "apiKey"
+      name: "key"
+      in: "query"

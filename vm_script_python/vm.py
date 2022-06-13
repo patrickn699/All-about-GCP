@@ -75,11 +75,12 @@ def create_instance(
     # Use the network interface provided in the network_link argument for
     # confuguring the network.
     network_interface = compute_v1.NetworkInterface()
-    network_interface.name = network_link
+    network_interface.name = network_link # attach to the network (VPC)
 
     if subnetwork_link:
-        network_interface.subnetwork = subnetwork_link
+        network_interface.subnetwork = subnetwork_link # attach to the subnetwork (subnet)
 
+    # Configure the network access configuration.
     if external_access:
         access = compute_v1.AccessConfig()
         access.type_ = compute_v1.AccessConfig.Type.ONE_TO_ONE_NAT.name
@@ -107,7 +108,7 @@ def create_instance(
         # Set the delete protection for accidentally deleting the instance.
         instance.deletion_protection = True
 
-    # Prepare the request to insert an instance.
+    # make the request to create an instance.
     request = compute_v1.InsertInstanceRequest()
     request.zone = zone
     request.project = project_id
@@ -116,12 +117,15 @@ def create_instance(
     # Wait for the create operation to complete.
     print(f"Creating the {instance_name} instance in {zone}...")
 
+    # Create the instance request.
     operation = instance_client.insert(request=request)
 
+    # Wait for the operation to complete.
     wait_for_extended_operation(operation, "instance creation")
 
     print(f"Instance {instance_name} created.")
     
+    # Get the response.
     return instance_client.get(project=project_id, zone=zone, instance=instance_name)
 
 
@@ -132,7 +136,7 @@ boot_disk = disk_from_image(disk_type='pd-standard', disk_size_ingb=10, boot=Tru
 base_image="windows-server-2019-dc-v20190828")
 
 
-create_instance(project_id="cloud-training-demos", zone="us-central1-a",
+create_instance(project_id="demo-project", zone="us-central1-a",
 instance_name="vm-python",
 machine_type="n1-standard-1", 
 network_link="global/networks/demo-vpc", 

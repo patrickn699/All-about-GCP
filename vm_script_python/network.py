@@ -1,7 +1,5 @@
-from pprint import pprint
 from googleapiclient import discovery
 from oauth2client.client import GoogleCredentials
-import time
 from wait import wait_for_extended_operation
 from google.cloud import compute_v1
 
@@ -28,39 +26,44 @@ def create_vpc(region: str, project_id: str, vpc_name: str, subnet_name: str):
 
     vpc_network_body = {
         "routingConfig": {
-            "routingMode": "REGIONAL"
+            "routingMode": "REGIONAL" # all subnets in the VPC will route to the same region
         },
         "autoCreateSubnetworks": False,
         "name": vpc_name,
-        "mtu": 1460,
-        "region": f"{region}"
+        "region": region
     }
 
     subnetwork_body = {
-        "enableFlowLogs": False,
+        "enableFlowLogs": False, # monitoring the traffic through the logs
         'ipCidrRange': "10.0.0.0/24",
         "name": subnet_name,
         "network": "projects/"+project_id+"/global/networks/"+vpc_name,
-        "privateIpGoogleAccess": False,
-        "region": f"{region}"
+        "privateIpGoogleAccess": False, # allow access to the private IP
+        "region": region
         
     }
     #"projects/network-demo-1-332510/global/networks/pnetwork"
 
+    # Create the VPC request.
     request1 = service.networks().insert(project=project_id, body=vpc_network_body)
     response1 = request1.execute()
 
-    pprint(response1)
+    # wait for the operation to complete.
+    wait_for_extended_operation(request1, "creating vpc")
 
-    print("creating network...\n")
-    time.sleep(30)
+    print(response1)
 
+
+    # Create the subnetwork request.
     request2 = service.subnetworks().insert(project=project_id, region=region, body=subnetwork_body)
     response2 = request2.execute()
 
-    pprint(response2)
+    # wait for the operation to complete.
+    wait_for_extended_operation(request2, "creating subnetwork")
 
-    print("creating subnetwork...\n")
+    print(response2)
+
+
 
 
 
@@ -81,34 +84,34 @@ def create_firewall_rule(project_id: str, firewall_rule_name: str, network: str)
 
     firewall_rule = compute_v1.Firewall()
     firewall_rule.name = firewall_rule_name
-    firewall_rule.direction = "INGRESS"
+    firewall_rule.direction = "INGRESS" # incoming traffic
 
     allowed_ports = compute_v1.Allowed()
-    allowed_ports.I_p_protocol = ["rdp","http"]
-    allowed_ports.ports = ["80","3389"]
+    allowed_ports.I_p_protocol = ["rdp","http"] 
+    allowed_ports.ports = ["80","3389"] # allow traffic on port 80 and 443
 
     firewall_rule.allowed = [allowed_ports]
-    firewall_rule.source_ranges = ["0.0.0.0/0"]
+    firewall_rule.source_ranges = ["0.0.0.0/0"] # allow traffic from anywhere
     firewall_rule.network = network
     firewall_rule.description = "Allowing rdp on port 3389 from Internet."
 
     firewall_rule.target_tags = ["web"]
 
-    # Note that the default value of priority for the firewall API is 1000.
-    # If you check the value of `firewall_rule.priority` at this point it
-    # will be equal to 0, however it is not treated as "set" by the library and thus
-    # the default will be applied to the new rule. If you want to create a rule that
-    # has priority == 0, you need to explicitly set it so:
-    # TODO: Uncomment to set the priority to 0
+    # the default value of priority for the firewall API is 1000.
+    # lower the value more priority the rule has.
+
     firewall_rule.priority = 500
 
+    # Create the firewall rule request.
     firewall_client = compute_v1.FirewallsClient()
     operation = firewall_client.insert(
         project=project_id, firewall_resource=firewall_rule
     )
 
+    # Wait for the operation to complete.
     wait_for_extended_operation(operation, "firewall rule creation")
 
+    # retturn the respose.
     return firewall_client.get(project=project_id, firewall=firewall_rule_name)
 
 

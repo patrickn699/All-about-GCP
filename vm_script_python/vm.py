@@ -132,8 +132,8 @@ def create_instance(
 
 win = "Windows Server 2019 Datacenter"
 
-boot_disk = disk_from_image(disk_type='pd-standard', disk_size_ingb=10, boot=True, 
-base_image="windows-server-2019-dc-v20190828")
+boot_disk = disk_from_image(disk_type='https://www.googleapis.com/compute/v1/projects/project_id/zones/us-central1-a/diskTypes/pd-standard', disk_size_ingb=10, boot=True, 
+base_image="projects/windows-cloud/global/images/windows-server-2019-dc-v20190828")
 
 
 create_instance(project_id="demo-project", zone="us-central1-a",
@@ -141,4 +141,4 @@ instance_name="vm-python",
 machine_type="n1-standard-1", 
 network_link="global/networks/demo-vpc", 
 subnetwork_link="regions/us-central1/subnetworks/demo-subnet",
-disks=boot_disk)
+disks= [boot_disk])

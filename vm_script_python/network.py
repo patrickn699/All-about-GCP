@@ -20,8 +20,8 @@ def create_vpc(region: str, project_id: str, vpc_name: str, subnet_name: str):
         subnet_name: The name of the subnet.
     """
 
-    vpc = compute_v1.Vpc()
-    vpc.name = vpc_name
+    #vpc = compute_v1.Vpc()
+    #vpc.name = vpc_name
 
 
     vpc_network_body = {
